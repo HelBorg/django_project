@@ -1,31 +1,32 @@
 from mongoengine import *
 
 
-class DateValue(Document):
+class DateValue(EmbeddedDocument):
     date = DateTimeField()
     value = FloatField()
 
 
-class Data(Document):
+class Data(EmbeddedDocument):
     x_data_type = StringField(max_length=200)
     y_data_type = StringField(max_length=200)
 
-    x = ListField(ReferenceField('DateValue', reverse_delete_rule=CASCADE))
-    y = ListField(ReferenceField('DateValue', reverse_delete_rule=CASCADE))
+    x = ListField(EmbeddedDocumentField(DateValue))
+    y = ListField(EmbeddedDocumentField(DateValue))
 
 
 class User(Document):
     user_id = IntField()
-    data = ReferenceField('Data', reverse_delete_rule=CASCADE)
+    data = EmbeddedDocumentField(Data)
 
 
-class Correlation(Document):
+class Correlation(EmbeddedDocument):
     value = FloatField()
     p_value = FloatField()
 
 
 class CorrelationResults(Document):
+    id = StringField(primary_key=True, max_length=200)
     user_id = IntField()
     x_data_type = StringField(max_length=200)
     y_data_type = StringField(max_length=200)
-    correlation = ReferenceField('Correlation', reverse_delete_rule=CASCADE)
+    correlation = EmbeddedDocumentField(Correlation)
