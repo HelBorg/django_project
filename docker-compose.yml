@@ -1,0 +1,37 @@
+services:
+  mongodb:
+    image: mongo:latest
+    restart: always
+    command: mongod --storageEngine wiredTiger
+    environment:
+      MONGODB_ROOT_USERNAME: root
+      MONGODB_ROOT_PASSWORD: root
+      MONGODB_DATABASE: pearson_correlation
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - webnet
+
+  web:
+    build: .
+    restart: always
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - django:/code
+    ports:
+      - 8000:8000
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    environment:
+      WAIT_HOSTS: db:27017
+#      - MONGODB_CONNSTRING=mongodb://root:mongoadmin@mongodb?authSource=admin
+networks:
+  webnet:
+
+volumes:
+  mongodata:
+  django:

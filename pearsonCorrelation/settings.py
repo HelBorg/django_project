@@ -77,15 +77,43 @@ WSGI_APPLICATION = 'pearsonCorrelation.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-import mongoengine
+# import mongoengine
+#
+# MONGO_DATABASE_NAME = "pearson_correlation"
+# MONGO_HOST = "mongodb"
+# mongoengine.connect(db=MONGO_DATABASE_NAME,
+#                     username='root',
+#                     password='root',
+#                     host='localhost',
+#                     port=27017)
 
-mongoengine.connect(db='pearson_correlation')
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': 'djongo',
+#         'ENFORCE_SCHEMA': True,
+#         'NAME': 'pearson_correlation',
+#         'HOST': 'localhost',
+#         'PORT': 27017,
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'AUTH_SOURCE': 'admin',
+#         'AUTH_MECHANISM': 'SCRAM-SHA-1',
 #     }
 # }
+
+DATABASE = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'pearson_correlation',
+        'CLIENT': {
+            'host': 'mongodb://mongodb:27017',
+            'username': 'root',
+            'password': 'mongoadmin',
+            'authSource': 'admin',
+            'authMechanism': 'SCRAM-SHA-256',
+        }
+    }
+}
 
 
 # Password validation
